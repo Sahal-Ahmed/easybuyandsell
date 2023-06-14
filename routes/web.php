@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SuperAdminController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,8 +20,10 @@ Route::get('/', function () {
 });
 */
 // backend route
-Route::get('/admin',[AdminController::class,'index']);
-Route::get('/dashboard',[AdminController::class,'dashboard']);
+Route::get('/admins',[AdminController::class,'index']);
+Route::post('/admin-dashboard',[AdminController::class,'show_dashboard']);
+Route::get('/dashboard',[SuperAdminController::class,'dashboard']);
+Route::get('/logout',[SuperAdminController::class,'logout']);
 
 // frontend route
 Route::get('/',[HomeController::class,'index']);
