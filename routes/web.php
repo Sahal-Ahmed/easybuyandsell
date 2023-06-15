@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\CategoryController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,6 +25,9 @@ Route::get('/admins',[AdminController::class,'index']);
 Route::post('/admin-dashboard',[AdminController::class,'show_dashboard']);
 Route::get('/dashboard',[SuperAdminController::class,'dashboard']);
 Route::get('/logout',[SuperAdminController::class,'logout']);
+
+//category route here...
+Route::resource('/categories',CategoryController::Class);
 
 // frontend route
 Route::get('/',[HomeController::class,'index']);
