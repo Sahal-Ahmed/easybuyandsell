@@ -28,6 +28,7 @@ Route::get('/logout',[SuperAdminController::class,'logout']);
 
 //category route here...
 Route::resource('/categories',CategoryController::Class);
+Route::get('/cat-status{category}',[CategoryController::class,'change_status']);
 
 // frontend route
 Route::get('/',[HomeController::class,'index']);
