@@ -14,12 +14,12 @@
                         ?>
                     </p>
 					</div>
-					<div class="row-fluid">
+                    <div class="row-fluid">
 						<div class="span12">
 							<div class="span9"></div>
 							<div class="span3">
 								<span class="btn btn-danger">
-									<a href="{{url('/categories-trash')}}">View Trash</a>
+									<a href="{{url('/categories')}}">View Category</a>
 								</span>
 							</div>
 						</div>
@@ -51,7 +51,7 @@
                                     @endif
 								</td>
 								<td class="row">
-                                    <div class="span3"></div>
+                                    
                                     <div class="span2">
                                     @if($category->status==1)
 									<a class="btn btn-success" href="{{url('/cat-status'.$category->id)}}">
@@ -63,21 +63,20 @@
 									</a>
                                     @endif
                                     </div>
-                                    <div class="span2">
-									<a class="btn btn-info" href="{{url('categories/'.$category->id.'/edit')}}">
-										<i class="halflings-icon white edit"></i>  
+                                    <div class="span5">
+									<a class="btn btn-info" href="{{route('category.restore',['id'=>$category->id])}}">
+                                    <span class="">Restore</span>  
 									</a>
                                     </div>
-                                    <div class="span2">
-									<form action="{{url('/categories/'.$category->id)}}" method="post">
-										@csrf
-										@method('DELETE')
-									<button class="btn btn-danger" type="submit" value="Trash">
-										<i class="halflings-icon white trash"></i> 
+                                    <div class="span5">
+									<a href="{{route('category.delete',['id'=>$category->id])}}" >
+										
+									<button class="btn btn-danger">
+										<span class="">Delete</span> 
 									</button>
-									</form>
+									</a>
                                     </div>
-                                    <div class="span3"></div>
+                                   
 								</td>
 							</tr>
 							

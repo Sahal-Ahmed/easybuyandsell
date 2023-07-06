@@ -57,7 +57,7 @@
 
 
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-primary">Edit Category</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
                         </div>
                     </fieldset>
                 </form>

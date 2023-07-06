@@ -16,6 +16,12 @@ class CategoryController extends Controller
         $categories = Category::all();
         return view('admin.category.index',compact('categories'));
     }
+    
+    public function trash()
+    {
+        $categories = Category::onlyTrashed()->get();
+        return view('admin.category.trash',compact('categories'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -39,14 +45,14 @@ class CategoryController extends Controller
         $category->id = $request->category;
         $category->name = $request->name;
         $category->description = $request->description;
-
-        if($request->hasfile('image')){
-            $file = $request->file('image');
-            $extension = $file->getClientOriginalExtension();
-            $fileName= time().'.'.$extension;
-            $file->move('category',$fileName);
-            $category->image = $fileName;
-        }
+        $category->image = $request->image->store('category');
+        // if($request->hasfile('image')){
+        //     $file = $request->file('image');
+        //     $extension = $file->getClientOriginalExtension();
+        //     $fileName= time().'.'.$extension;
+        //     $file->move('category',$fileName);
+        //     $category->image = $fileName;
+        // }
         $category->save();
         return redirect()->back()->with('message','category saved successfully');
     }
@@ -87,7 +93,16 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+       
+        $update=$category->update([
+            'name'=>$request->name,
+            'description'=>$request->description,
+            'image'=>$request->image->store('category')
+
+        ]);
+        if($update)
+            return redirect('/categories')->with('message','updated successfully');
+        
     }
 
     /**
@@ -96,8 +111,29 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        //
+        $delete=$category->delete();
+        if($delete)
+                return redirect()->back()->with('message','Move to trash successfully');
+    }
+
+    public function forceDelete($id)
+    {
+        $category =Category::withTrashed()->find($id);
+        if(!is_null($category)){
+            $category->forceDelete();
+        }
+        return redirect()->back()->with('message','permanently delete successfully');
+    }
+
+    public function restore($id){
+        //$restore=$category->restore();
+        // $id = $category->id;
+        $category =Category::withTrashed()->find($id);
+        if(!is_null($category)){
+            $category->restore();
+        }
+        return redirect('/categories')->with('message','Restore successfully');
     }
 }

@@ -29,6 +29,10 @@ Route::get('/logout',[SuperAdminController::class,'logout']);
 //category route here...
 Route::resource('/categories',CategoryController::Class);
 Route::get('/cat-status{category}',[CategoryController::class,'change_status']);
+Route::get('/categories-trash',[CategoryController::class,'trash']);
+Route::get('/categories/restore/{id}',[CategoryController::class,'restore'])->name('category.restore');
+Route::get('/categories/delete/{id}',[CategoryController::class,'forceDelete'])->name('category.delete');
+
 
 // frontend route
 Route::get('/',[HomeController::class,'index']);
