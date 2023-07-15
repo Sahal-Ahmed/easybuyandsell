@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SubCategoryController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,6 +34,9 @@ Route::get('/categories-trash',[CategoryController::class,'trash']);
 Route::get('/categories/restore/{id}',[CategoryController::class,'restore'])->name('category.restore');
 Route::get('/categories/delete/{id}',[CategoryController::class,'forceDelete'])->name('category.delete');
 
+//subcategory route here...
+Route::resource('/sub-categories',SubCategoryController::Class);
+Route::get('/cat-status{subcategory}',[SubCategoryController::class,'change_status']);
 
 // frontend route
 Route::get('/',[HomeController::class,'index']);

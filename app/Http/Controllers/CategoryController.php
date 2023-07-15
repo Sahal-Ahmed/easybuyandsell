@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
 
 class CategoryController extends Controller
 {
@@ -13,7 +15,39 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
+        
+        //$categories = Category::all();
+        $startDate = Carbon::parse('2023-01-01');
+        $endDate = Carbon::parse('2023-12-31');
+
+        $categories = Category::whereBetween('created_at', [$startDate, $endDate])->get();
+
+
+        
+        // //$category=new Category;
+        // $startDate = Carbon::parse('2023-07-01');
+        // $endDate = Carbon::parse('2023-07-31');
+        //  // Replace with the name of the image you want to fetch
+
+        // //$imagePath = null;
+
+        // for ($date = $startDate; $date->lte($endDate); $date->addDay()) {
+        //     $year = $date->format('Y');
+        //     $month = $date->format('m');
+        //     $day = $date->format('d');
+        //     $category=new Category;
+        //     $imageName = $category->image;    
+        //     $folderName = "$year/$month/$day";
+
+        //     $folderPath = public_path('images/' . $folderName);
+
+        //     if (File::exists($folderPath . $imageName)) {
+        //         $imagePath = 'images/' . $folderName ;
+                
+        //         break; // Exit the loop if the image is found
+        //         //continue;
+        //     }
+        // }
         return view('admin.category.index',compact('categories'));
     }
     
@@ -41,18 +75,32 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+
         $category=new Category;
         $category->id = $request->category;
         $category->name = $request->name;
         $category->description = $request->description;
-        $category->image = $request->image->store('category');
-        // if($request->hasfile('image')){
-        //     $file = $request->file('image');
-        //     $extension = $file->getClientOriginalExtension();
-        //     $fileName= time().'.'.$extension;
-        //     $file->move('category',$fileName);
-        //     $category->image = $fileName;
-        // }
+
+        // $folderName = Carbon::now()->format('Y-m-d');
+        // $category->image = $request->image->store('category');
+        $date = Carbon::now();
+        $year = $date->format('Y');
+        $month = $date->format('m');
+        $day = $date->format('d');
+
+        $folderName = "$year/$month/$day";
+
+        $folderPath = public_path('images/' . $folderName);
+            if (!file_exists($folderPath)) {
+                mkdir($folderPath, 0777, true);
+            }
+        if($request->hasfile('image')){
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $fileName= time().'.'.$extension;
+            $file->move($folderPath,$fileName);
+            $category->image = $fileName;
+        }
         $category->save();
         return redirect()->back()->with('message','category saved successfully');
     }

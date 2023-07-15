@@ -42,7 +42,8 @@
 								<td>{{$category->id}}</td>
 								<td class="center">{{$category->name}}</td>
 								<td class="center">{!!$category->description!!}</td>
-                                <td class="center"><img src="{{asset('/storage/'.$category->image)}}" alt="" style="width:150px;height:80px;"></td>
+								<td class="center"><img src="{{ asset('images/' . $category->created_at->format('Y/m/d') . '/' . $category->image) }}" alt="" style="width:150px;height:80px;"></td>
+                                
 								<td class="center">
                                     @if($category->status==1)
 									<span class="label label-success">Active</span>
